@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card mx-auto shadow-sm" style="max-width: 500px;">
+  <div class="card-body">
+    <h4 class="mb-3">Book Trip: {{ trip.route }}</h4>
+    <form method="POST">
+      <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <input type="text" name="name" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Contact Number</label>
+        <input type="text" name="contact" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Number of Seats</label>
+        <input type="number" name="seats" class="form-control" min="1" max="{{ trip.seats_left }}" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Confirm Booking</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

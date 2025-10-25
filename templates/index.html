@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h2>Available Trips</h2>
+<table class="table table-bordered">
+  <thead class="table-primary">
+    <tr>
+      <th>ID</th><th>Route</th><th>Departure</th><th>Price</th><th>Seats Left</th><th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for trip in trips %}
+    <tr>
+      <td>{{ trip.id }}</td>
+      <td>{{ trip.route }}</td>
+      <td>{{ trip.departure }}</td>
+      <td>₱{{ '%.2f'|format(trip.price) }}</td>
+      <td>{{ trip.seats_left }}</td>
+      <td><a href="{{ url_for('book', trip_id=trip.id) }}" class="btn btn-success btn-sm">Book</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

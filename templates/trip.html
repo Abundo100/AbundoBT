@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card shadow-sm mx-auto" style="max-width: 500px;">
+  <div class="card-body">
+    <h4>{{ trip.route }}</h4>
+    <p><strong>Departure:</strong> {{ trip.departure }}</p>
+    <p><strong>Price:</strong> ₱{{ '%.2f'|format(trip.price) }}</p>
+    <p><strong>Seats Left:</strong> {{ trip.seats_left }}</p>
+    <a href="{{ url_for('book', trip_id=trip.id) }}" class="btn btn-success w-100 mt-3">Book This Trip</a>
+  </div>
+</div>
+{% endblock %}
+    

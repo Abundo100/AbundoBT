@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+<form method="POST" class="mb-3">
+  <input type="hidden" name="action" value="add">
+  <div class="row">
+    <div class="col"><input name="route" placeholder="Route" class="form-control" required></div>
+    <div class="col"><input name="departure" placeholder="Departure" class="form-control" required></div>
+    <div class="col"><input name="price" placeholder="Price" type="number" step="0.01" class="form-control" required></div>
+    <div class="col"><input name="seats" placeholder="Seats" type="number" class="form-control" required></div>
+    <div class="col"><button class="btn btn-primary">Add Trip</button></div>
+  </div>
+</form>
+
+<table class="table table-bordered">
+  <thead class="table-dark"><tr><th>ID</th><th>Route</th><th>Departure</th><th>Seats Left</th><th>Action</th></tr></thead>
+  <tbody>
+  {% for trip in trips %}
+    <tr>
+      <td>{{ trip.id }}</td><td>{{ trip.route }}</td><td>{{ trip.departure }}</td><td>{{ trip.seats_left }}</td>
+      <td>
+        <form method="POST" style="display:inline">
+          <input type="hidden" name="action" value="delete">
+          <input type="hidden" name="trip_id" value="{{ trip.id }}">
+          <button class="btn btn-danger btn-sm">Delete</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
