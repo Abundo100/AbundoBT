@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}Available Trips - Bus Ticketing{% endblock %}
+{% block content %}
+<div class="text-center mb-4">
+  <h1 class="display-4 fw-bold text-primary">🚌 Available Bus Trips</h1>
+  <p class="lead text-muted">Book your journey with us today!</p>
+</div>
+
+<!-- Search and Filter Form -->
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title mb-3">🔍 Search & Filter Trips</h5>
+    <form method="GET">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label class="form-label">Route</label>
+          <input type="text" name="route" class="form-control" placeholder="e.g., Manila to Baguio" value="{{ request.args.get('route', '') }}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Date</label>
+          <input type="date" name="date" class="form-control" value="{{ request.args.get('date', '') }}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Bus Type</label>
+          <select name="bus_type" class="form-select">
+            <option value="">All Types</option>
+            <option value="Regular" {% if request.args.get('bus_type')=='Regular' %}selected{% endif %}>Regular</option>
+            <option value="Deluxe" {% if request.args.get('bus_type')=='Deluxe' %}selected{% endif %}>Deluxe</option>
+            <option value="Premium" {% if request.args.get('bus_type')=='Premium' %}selected{% endif %}>Premium</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Availability</label>
+          <select name="availability" class="form-select">
+            <option value="">All</option>
+            <option value="available" {% if request.args.get('availability')=='available' %}selected{% endif %}>Available Only</option>
+            <option value="full" {% if request.args.get('availability')=='full' %}selected{% endif %}>Fully Booked</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary mt-3">
+        🔍 Apply Filters
+      </button>
+      <a href="{{ url_for('index') }}" class="btn btn-outline-secondary mt-3">
+        🔄 Clear Filters
+      </a>
+    </form>
+  </div>
+</div>
+
+<!-- Trips Table -->
+<div class="table-responsive">
+  <table class="table table-hover table-bordered">
+    <thead class="table-primary">
+      <tr>
+        <th>ID</th>
+        <th>🗺️ Route</th>
+        <th>🕐 Departure</th>
+        <th>💺 Seats Left</th>
+        <th>💰 Price</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for trip in trips %}
+        <tr>
+          <td>{{ trip.id }}</td>
+          <td><strong>{{ trip.route }}</strong></td>
+          <td>{{ trip.departure }}</td>
+          <td>
+            {% if trip.seats_left > 10 %}
+              <span class="badge bg-success">{{ trip.seats_left }}</span>
+            {% elif trip.seats_left > 0 %}
+              <span class="badge bg-warning">{{ trip.seats_left }}</span>
+            {% else %}
+              <span class="badge bg-danger">Full</span>
+            {% endif %}
+          </td>
+          <td>₱{{ "%.2f"|format(trip.price) }}</td>
+          <td>
+            {% if trip.seats_left > 0 %}
+              {% if session.get('user_id') %}
+                <a href="{{ url_for('book', trip_id=trip.id) }}" class="btn btn-success btn-sm">
+                  🎫 Book Now
+                </a>
+              {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-secondary btn-sm">
+                  🔑 Login to Book
+                </a>
+              {% endif %}
+            {% else %}
+              <button class="btn btn-secondary btn-sm" disabled>Fully Booked</button>
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="6" class="text-center text-muted py-4">
+            <h5>No trips available</h5>
+            <p>Please check back later or adjust your filters.</p>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

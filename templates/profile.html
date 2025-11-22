@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}My Profile - Bus Ticketing{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h2 class="text-center mb-4">👤 My Profile</h2>
+
+    <div class="card shadow">
+      <div class="card-body">
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" name="name" value="{{ user.name }}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" value="{{ user.email }}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Contact Number</label>
+            <input type="text" name="contact" value="{{ user.contact or '' }}" class="form-control" placeholder="09XX-XXX-XXXX">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Role</label>
+            <input type="text" class="form-control" value="{{ user.role }}" disabled>
+          </div>
+          <button type="submit" class="btn btn-success w-100">💾 Save Changes</button>
+        </form>
+
+        <hr class="my-4">
+
+        <div class="d-grid">
+          <a href="{{ url_for('change_password') }}" class="btn btn-warning">
+            🔒 Change Password
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

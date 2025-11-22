@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard - Bus Ticketing{% endblock %}
+{% block content %}
+<h2 class="text-center mb-4">⚙️ Admin Dashboard</h2>
+
+<!-- Add Trip Form -->
+<div class="card mb-4">
+  <div class="card-header bg-success text-white">
+    <h5 class="mb-0">➕ Add New Trip</h5>
+  </div>
+  <div class="card-body">
+    <form method="POST">
+      <input type="hidden" name="action" value="add">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label class="form-label">Route</label>
+          <input type="text" name="route" class="form-control" placeholder="Manila to Baguio" required>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Departure Time</label>
+          <input type="text" name="departure" class="form-control" placeholder="8:00 AM" required>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Price (₱)</label>
+          <input type="number" step="0.01" name="price" class="form-control" placeholder="500.00" required>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Total Seats</label>
+          <input type="number" name="seats" class="form-control" placeholder="50" required>
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+          <button type="submit" class="btn btn-success w-100">Add Trip</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Trips Management Table -->
+<div class="card">
+  <div class="card-header bg-dark text-white">
+    <h5 class="mb-0">🚌 Manage Trips</h5>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-secondary">
+          <tr>
+            <th>ID</th>
+            <th>Route</th>
+            <th>Departure</th>
+            <th>Price</th>
+            <th>Total Seats</th>
+            <th>Seats Left</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for trip in trips %}
+            <tr>
+              <td>{{ trip.id }}</td>
+              <td><strong>{{ trip.route }}</strong></td>
+              <td>{{ trip.departure }}</td>
+              <td>₱{{ "%.2f"|format(trip.price) }}</td>
+              <td>{{ trip.seats_total }}</td>
+              <td>
+                {% if trip.seats_left > 10 %}
+                  <span class="badge bg-success">{{ trip.seats_left }}</span>
+                {% elif trip.seats_left > 0 %}
+                  <span class="badge bg-warning">{{ trip.seats_left }}</span>
+                {% else %}
+                  <span class="badge bg-danger">Full</span>
+                {% endif %}
+              </td>
+              <td>
+                <form method="POST" style="display:inline" onsubmit="return confirm('Delete this trip?');">
+                  <input type="hidden" name="action" value="delete">
+                  <input type="hidden" name="trip_id" value="{{ trip.id }}">
+                  <button type="submit" class="btn btn-danger btn-sm">🗑️ Delete</button>
+                </form>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="7" class="text-center text-muted py-4">No trips added yet</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Login - Bus Ticketing{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card shadow-lg">
+      <div class="card-body p-4">
+        <h2 class="text-center mb-4">🔑 Login</h2>
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <input type="email" name="email" class="form-control" placeholder="your@email.com" required autofocus>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+        <div class="text-center mt-3">
+          <p class="mb-2">Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+          <p><a href="{{ url_for('forgot_password') }}">Forgot password?</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

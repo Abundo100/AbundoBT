@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}My Bookings - Bus Ticketing{% endblock %}
+{% block content %}
+<h2 class="text-center mb-4">📋 All Bookings</h2>
+
+<div class="table-responsive">
+  <table class="table table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>👤 Passenger</th>
+        <th>📞 Contact</th>
+        <th>🗺️ Route</th>
+        <th>💺 Seats</th>
+        <th>📅 Booked On</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in bookings %}
+        <tr>
+          <td>{{ b.id }}</td>
+          <td>{{ b.passenger_name }}</td>
+          <td>{{ b.passenger_contact }}</td>
+          <td><strong>{{ b.trip.route }}</strong></td>
+          <td><span class="badge bg-primary">{{ b.seats_booked }}</span></td>
+          <td>{{ b.created_at.strftime('%B %d, %Y at %I:%M %p') }}</td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="6" class="text-center text-muted py-4">
+            <h5>No bookings yet</h5>
+            <p>Start by booking your first trip!</p>
+            <a href="{{ url_for('index') }}" class="btn btn-primary mt-2">Browse Trips</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

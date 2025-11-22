@@ -1,0 +1,44 @@
+<form method="GET" action="{{ url_for('trips') }}" class="mb-3">
+
+    <div class="row">
+
+        <!-- Search Route -->
+        <div class="col-md-3">
+            <label>Search Route</label>
+            <input type="text" name="route" class="form-control"
+                   placeholder="Manila to Baguio" value="{{ request.args.get('route', '') }}">
+        </div>
+
+        <!-- Filter Date -->
+        <div class="col-md-3">
+            <label>Date</label>
+            <input type="date" name="date" class="form-control"
+                   value="{{ request.args.get('date', '') }}">
+        </div>
+
+        <!-- Filter Bus Type -->
+        <div class="col-md-3">
+            <label>Bus Type</label>
+            <select name="bus_type" class="form-control">
+                <option value="">All</option>
+                <option value="Regular" {% if request.args.get('bus_type')=='Regular' %}selected{% endif %}>Regular</option>
+                <option value="Deluxe" {% if request.args.get('bus_type')=='Deluxe' %}selected{% endif %}>Deluxe</option>
+                <option value="Premium" {% if request.args.get('bus_type')=='Premium' %}selected{% endif %}>Premium</option>
+            </select>
+        </div>
+
+        <!-- Filter by Seat Availability -->
+        <div class="col-md-3">
+            <label>Availability</label>
+            <select name="availability" class="form-control">
+                <option value="">All</option>
+                <option value="available" {% if request.args.get('availability')=='available' %}selected{% endif %}>Available Only</option>
+                <option value="full" {% if request.args.get('availability')=='full' %}selected{% endif %}>Fully Booked</option>
+            </select>
+        </div>
+
+    </div>
+
+    <button class="btn btn-primary mt-3">Apply Filters</button>
+
+</form>

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Book Trip - Bus Ticketing{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-lg">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">🎫 Book Your Trip</h4>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-info">
+          <h5>{{ trip.route }}</h5>
+          <p class="mb-1"><strong>Departure:</strong> {{ trip.departure }}</p>
+          <p class="mb-1"><strong>Price:</strong> ₱{{ "%.2f"|format(trip.price) }} per seat</p>
+          <p class="mb-0"><strong>Available Seats:</strong> {{ trip.seats_left }}</p>
+        </div>
+
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" name="name" class="form-control" placeholder="Enter passenger name" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Contact Number</label>
+            <input type="text" name="contact" class="form-control" placeholder="09XX-XXX-XXXX" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Number of Seats</label>
+            <input type="number" name="seats" class="form-control" min="1" max="{{ trip.seats_left }}" value="1" required>
+            <small class="text-muted">Available: {{ trip.seats_left }} seats</small>
+          </div>
+
+          <div class="alert alert-warning">
+            <strong>Total Price:</strong> ₱<span id="totalPrice">{{ "%.2f"|format(trip.price) }}</span>
+          </div>
+
+          <button type="submit" class="btn btn-success w-100">✅ Confirm Booking</button>
+          <a href="{{ url_for('index') }}" class="btn btn-outline-secondary w-100 mt-2">← Back to Trips</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const pricePerSeat = {{ trip.price }};
+  const seatsInput = document.querySelector('input[name="seats"]');
+  const totalPriceSpan = document.getElementById('totalPrice');
+
+  seatsInput.addEventListener('input', function() {
+    const seats = parseInt(this.value) || 1;
+    const total = seats * pricePerSeat;
+    totalPriceSpan.textContent = total.toFixed(2);
+  });
+</script>
+{% endblock %}
